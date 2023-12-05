@@ -1,4 +1,4 @@
-file = open('/home/faelern/PycharmProjects/advent_of_code/day03/input.txt', 'r')
+file = open('input.txt', 'r')
 input_txt = []
 
 for line in file:
@@ -9,7 +9,8 @@ file.close()
 digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 values = []
 values_indexes = []
-special_chars_indexes = []
+gears_indexes = []
+gears_adj_num_count = []
 
 values_sum = 0
 
@@ -20,7 +21,7 @@ for line in input_txt:
 
     line_values = []
     line_values_indexes = []
-    line_special_char_indexes = []
+    line_gears_indexes = []
     for i, char in enumerate(line):
 
         if char not in digits:
@@ -31,8 +32,9 @@ for line in input_txt:
 
             prev_char = False
 
-            if char not in ['.', '\n']:
-                line_special_char_indexes.append(i)
+            if char == '*':
+                line_gears_indexes.append(i)
+
 
         else:
             prev_char = True
@@ -40,9 +42,14 @@ for line in input_txt:
 
     values.append(line_values)
     values_indexes.append(line_values_indexes)
-    special_chars_indexes.append(line_special_char_indexes)
+    gears_indexes.append(line_gears_indexes)
+    gears_adj_num_count.append([])
+    print(line_values)
+    print(line_values_indexes)
+    print(line_gears_indexes)
 
-special_chars_indexes.append([])
+gears_indexes.append([])
+
 
 for i, line in enumerate(values):
     for j, value in enumerate(line):
@@ -50,9 +57,9 @@ for i, line in enumerate(values):
         possible_indexes = [*range(values_indexes[i][j] - 1, values_indexes[i][j] + len(value) + 1)]
 
         for possible_index in possible_indexes:
-            if (possible_index in special_chars_indexes[i - 1] or
-                    possible_index in special_chars_indexes[i] or
-                    possible_index in special_chars_indexes[i + 1]):
+            if (possible_index in gears_indexes[i - 1] or
+                    possible_index in gears_indexes[i] or
+                    possible_index in gears_indexes[i + 1]):
                 correct = True
 
         if correct:

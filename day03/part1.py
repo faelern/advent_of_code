@@ -1,4 +1,4 @@
-file = open('/home/faelern/PycharmProjects/advent_of_code/day03/input.txt', 'r')
+file = open('input.txt', 'r')
 input_txt = []
 
 for line in file:

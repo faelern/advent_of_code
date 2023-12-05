@@ -1,16 +1,14 @@
-# 12 red, 13 green, 14 blue
 
 colors = ['red', 'green', 'blue']
-max_values = [12, 13, 14]
 
 file = open('/home/faelern/PycharmProjects/advent_of_code/day02/input.txt', 'r')
 
 lines = [line.split(': ')[1] for line in file]
 
-sum = 0
-game_possible = True
+power_sum = 0
+
 for i, game in enumerate(lines):
-    game_possible = True
+    max_values = [0, 0, 0]
     game = game.split('; ')
     for hand in game:
         hand = hand.split(', ')
@@ -18,14 +16,16 @@ for i, game in enumerate(lines):
             color_in_hand = color_in_hand.split(' ')
             for j, color in enumerate(colors):
                 if color_in_hand[1].startswith(color):
-                    if int(color_in_hand[0]) > max_values[j]:
-                        game_possible = False
+                    value = int(color_in_hand[0])
+                    if value > max_values[j]:
+                        max_values[j] = value
 
-
-    if game_possible:
-        sum += i + 1
+    power = 1
+    for x in max_values:
+        power *= x
+    power_sum += power
 
 file.close()
-print(sum)
+print(power_sum)
 
 

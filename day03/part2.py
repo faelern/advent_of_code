@@ -1,68 +1,57 @@
-file = open('input.txt', 'r')
+file = open('/home/faelern/PycharmProjects/advent_of_code/day03/input.txt', 'r')
 input_txt = []
 
-for line in file:
-    input_txt.append(line)
+for asterisk_line in file:
+    input_txt.append(asterisk_line)
 
 file.close()
 
 digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+asterisks_indexes = []
+gears_indexes = []
 values = []
 values_indexes = []
-gears_indexes = []
-gears_adj_num_count = []
-
-values_sum = 0
-
 value = ''
-prev_char = False
+prev_char_digit = False
 
-for line in input_txt:
 
-    line_values = []
-    line_values_indexes = []
-    line_gears_indexes = []
-    for i, char in enumerate(line):
-
+for y, asterisk_line in enumerate(input_txt):
+    values.append([])
+    values_indexes.append([])
+    asterisks_indexes.append([])
+    for x, char in enumerate(asterisk_line):
         if char not in digits:
-            if prev_char:
-                line_values.append(value)
-                line_values_indexes.append(i - len(value))
+            if prev_char_digit:
+                values[y].append(value)
+                values_indexes[y].append(x - len(value))
                 value = ''
-
-            prev_char = False
+            prev_char_digit = False
 
             if char == '*':
-                line_gears_indexes.append(i)
-
-
+                asterisks_indexes[y].append(x)
         else:
-            prev_char = True
+            prev_char_digit = True
             value += char
 
-    values.append(line_values)
-    values_indexes.append(line_values_indexes)
-    gears_indexes.append(line_gears_indexes)
-    gears_adj_num_count.append([])
-    print(line_values)
-    print(line_values_indexes)
-    print(line_gears_indexes)
 
-gears_indexes.append([])
+ratios_sum = 0
+adj_values = []
 
+for y, asterisk_line in enumerate(asterisks_indexes):
+    for asterisk_index in asterisk_line:
+        adj_values = []
+        for i, value_line in enumerate(values_indexes):
+            if i in [y - 1, y, y + 1]:
+                for j, index in enumerate(value_line):
+                    if index <= asterisk_index + 1 and index + len(values[i][j]) >= asterisk_index:
+                        adj_values.append(values[i][j])
 
-for i, line in enumerate(values):
-    for j, value in enumerate(line):
-        correct = False
-        possible_indexes = [*range(values_indexes[i][j] - 1, values_indexes[i][j] + len(value) + 1)]
+        if len(adj_values) == 2:
+            product = 1
+            for x in adj_values:
+                product *= int(x)
+            ratios_sum += product
 
-        for possible_index in possible_indexes:
-            if (possible_index in gears_indexes[i - 1] or
-                    possible_index in gears_indexes[i] or
-                    possible_index in gears_indexes[i + 1]):
-                correct = True
+print(ratios_sum)
 
-        if correct:
-            values_sum += int(value)
-
-print(values_sum)

@@ -8,7 +8,7 @@
 from tqdm import trange
 from tqdm import tqdm
 
-file = open('/home/faelern/PycharmProjects/advent_of_code/day05/input.txt', 'r')
+file = open('input.txt', 'r')
 
 maps = []
 
@@ -29,14 +29,14 @@ seeds = seeds.split(' ')
 seeds = [int(seed) for seed in seeds]
 new_seeds = []
 
-for i in trange(0, len(seeds), 2):
-    for x in range(seeds[i], seeds[i] + seeds[i+1]):
+for i in range(0, len(seeds), 2):
+    for x in trange(seeds[i], seeds[i] + seeds[i+1]):
         new_seeds.append(x)
 
-print(new_seeds)
+print(len(new_seeds))
+
 
 match = False
-
 for seed in tqdm(new_seeds):
     start = seed
 

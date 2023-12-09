@@ -1,9 +1,15 @@
-file = open('/home/faelern/PycharmProjects/advent_of_code/day08/input.txt', 'r')
+from math import gcd
+
+def lcm(a, b):
+    return (a * b) / gcd(a, b)
+
+
+file = open('input.txt', 'r')
 
 directions = file.readline()[:-1]
 nodes = {}
 current_nodes = []
-complete_paths = []
+paths = []
 
 steps = 0
 
@@ -19,20 +25,24 @@ file.close()
 for node in nodes:
     if node[-1] == 'A':
         current_nodes.append(node)
-        complete_paths.append(0)
 
-while 0 in complete_paths:
-    for direction in directions:
-        if 0 in complete_paths:
-            for i, current_node in enumerate(current_nodes):
+print(current_nodes)
+
+
+for current_node in current_nodes:
+    while not current_node[-1] == 'Z':
+        for direction in directions:
+            if not current_node[-1] == 'Z':
                 if direction == 'L':
-                    current_nodes[i] = nodes[current_node][0]
+                    current_node = nodes[current_node][0]
                 else:
-                    current_nodes[i] = nodes[current_node][1]
+                    current_node = nodes[current_node][1]
+                steps += 1
+    paths.append(steps)
+    steps = 0
 
-                if current_nodes[i][-1] == 'Z':
-                    complete_paths[i] = 1
-                else:
-                    complete_paths[i] = 0
-            steps += 1
-print(steps)
+print(paths)
+x = paths[0]
+for i in range(len(paths) - 1):
+    x = lcm(int(x), int(paths[i + 1]))
+print(x)

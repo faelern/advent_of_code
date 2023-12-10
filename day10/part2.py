@@ -10,48 +10,17 @@ with open('input.txt', 'r') as file:
         lines.append(line)
 
 
-for y, line in enumerate(lines):
-    for x, char in enumerate(line):
-        if char == 'S':
-            start_pos = [y, x]
-
-
-# y = start_pos[0]
-# x = start_pos[1]
-pos = []
 loop = []
 steps = 1
 
-# if 'N' in directions[lines[y + 1][x]]:
-#     pos = [y + 1, x]
-#     came_from = 'N'
-#
-# if 'E' in directions[lines[y][x - 1]]:
-#     pos = [y, x - 1]
-#     came_from = 'E'
-#
-# if 'S' in directions[lines[y - 1][x]]:
-#     pos = [y - 1, x]
-#     came_from = 'S'
-#
-#
-# if 'W' in directions[lines[y][x + 1]]:
-#     pos = [y, x + 1]
-#     came_from = 'W'
-#
-#
-# y = pos[0]
-# x = pos[1]
+
 y = 31
 x = 112
 
 
 char = lines[y][x]
-print(lines[y][x])
 came_from = 'W'
-print(came_from)
 going_to = directions[char].replace(came_from, '')
-print(going_to)
 
 while char != 'S':
     if going_to == 'N':
@@ -71,4 +40,22 @@ while char != 'S':
     steps += 1
 
 print(steps/2)
+
+inner = 0
+outer = 0
+
+for y, line in enumerate(lines):
+    intersect = 0
+    for x, char in enumerate(line):
+        if [y, x] in loop:
+            intersect += 1
+        else:
+            if intersect % 2 == 0:
+                outer += 1
+            else:
+                inner += 1
+
+print(inner)
+
+# poziome rury psuja
 

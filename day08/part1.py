@@ -1,4 +1,4 @@
-file = open('/home/faelern/PycharmProjects/advent_of_code/day08/input.txt', 'r')
+file = open('input.txt', 'r')
 
 directions = file.readline()[:-1]
 nodes = {}

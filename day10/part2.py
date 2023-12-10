@@ -1,27 +1,51 @@
 lines = []
 
-directions = {'|': 'NS', '-': 'EW', 'L': 'NE', 'J': 'NW', '7': 'SW', 'F': 'SE'}
+directions = {'|': 'NS', '-': 'EW', 'L': 'NE', 'J': 'NW', '7': 'SW', 'F': 'SE', '.': '', 'S': ''}
 
 dir_change = {'N': 'S', 'S': 'N', 'E': 'W', 'W': 'E'}
 
 bends = ['L', 'J', '7', 'F', 'S']
 
 start_pos = []
-with open('input.txt', 'r') as file:
+with open('/home/faelern/PycharmProjects/advent_of_code/day10/input.txt', 'r') as file:
     for line in file:
         lines.append(line)
 
-
+x_limit = len(lines[0])
+y_limit = len(lines)
 loop = []
 steps = 1
 
-y = 1
-x = 2
+for i, line in enumerate(lines):
+    for j, char in enumerate(line):
+        if char == 'S':
+            start_pos = [i, j]
 
-start_pos = [y, x]
+came_from = '#'
+found = False
+for going_to in ['N', 'E', 'S', 'W']:
+
+    if not found:
+        y = start_pos[0]
+        x = start_pos[1]
+        if going_to == 'N' and y > 0:
+            y -= 1
+            came_from = 'S'
+        elif going_to == 'E' and x < x_limit:
+            x += 1
+            came_from = 'W'
+        elif going_to == 'S' and y < y_limit:
+            y += 1
+            came_from = 'N'
+        elif going_to == 'W' and x > 0:
+            x -= 1
+            came_from = 'E'
+
+        if came_from in directions[lines[y][x]]:
+            found = True
 
 char = lines[y][x]
-came_from = 'W'
+loop.append([y, x])
 going_to = directions[char].replace(came_from, '')
 
 while char != 'S':
@@ -41,37 +65,20 @@ while char != 'S':
         going_to = directions[char].replace(came_from, '')
     steps += 1
 
-print('steps', steps/2)
+print('steps', steps / 2)
 
-loop.append(start_pos)
-# inner = 0
-# outer = 0
-#
-# for y, line in enumerate(lines):
-#     intersect = 0
-#     for x, char in enumerate(line):
-#         if [y, x] in loop:
-#             intersect += 1
-#         else:
-#             if intersect % 2 == 0:
-#                 outer += 1
-#             else:
-#                 inner += 1
 
 vertices = [point for point in loop if lines[point[0]][point[1]] in bends]
 
-# vertices.append(vertices[0])
 
 area = 0
 for i in range(len(vertices) - 1):
     area += vertices[i][1] * vertices[i + 1][0] - vertices[i][0] * vertices[i + 1][1]
-    print('foo')
 area += vertices[-1][1] * vertices[0][0] - vertices[-1][0] * vertices[0][1]
 
 print('loop', len(loop))
 area = abs(area) / 2
 print('area', area)
 
-
-inner = area - len(loop)/2 + 1
+inner = area - len(loop) / 2 + 1
 print('inner', inner)

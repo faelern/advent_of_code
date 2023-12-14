@@ -1,25 +1,42 @@
 data = ''
 
-with open('/home/faelern/PycharmProjects/advent_of_code/day13/input.txt', 'r') as file:
+with open('input.txt', 'r') as file:
     data = file.read()
 
 data = data.split('\n\n')
-for pattern in data:
-    pattern = pattern.split('\n')
-
-print(data)
+data = [pattern.split('\n') for pattern in data]
+data[-1] = data[-1][:-1]
 
 
-def search_for_horizontal(given_data):
-    size = len(given_data)
+def search_for_horizontal(given_pattern):
+    size = len(given_pattern)
     for i in range(size - 1):
-        if given_data[i] == given_data[i + 1]:
+        if given_pattern[i] == given_pattern[i + 1]:
             mirror = True
-            for j in range(min(i, size - 1)):
-                if not given_data[i - j] == given_data[i + 1 + j]:
+            for j in range(min(i + 1, size - i - 1)):
+                if not given_pattern[i - j] == given_pattern[i + 1 + j]:
                     mirror = False
             if mirror:
                 return i + 1
     return None
 
 
+def transpone(given_pattern):
+    cols = []
+    for x in range(len(given_pattern[0])):
+        temp = ''
+        for y in range(len(given_pattern)):
+            temp += given_pattern[y][x]
+        cols.append(temp)
+    return cols
+
+
+value = 0
+for pattern in data:
+    horizontal = search_for_horizontal(pattern)
+    if horizontal:
+        value += 100 * horizontal
+    else:
+        value += search_for_horizontal(transpone(pattern))
+
+print(value)

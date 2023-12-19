@@ -1,5 +1,5 @@
 data = []
-with open('/home/faelern/PycharmProjects/advent_of_code/day16/input.txt', 'r') as file:
+with open('input.txt', 'r') as file:
     for line in file:
         data.append(line[:-1])
 
